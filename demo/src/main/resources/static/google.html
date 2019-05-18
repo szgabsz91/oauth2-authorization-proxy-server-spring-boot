@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OAuth2 Authorization Proxy Server Spring Boot Demo - Google</title>
+        <link rel="stylesheet" href="webjars/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <script src="google.js" async defer></script>
+    </head>
+    <body>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <h5 class="my-0 mr-md-auto font-weight-normal">OAuth2 Authorization Proxy Server Spring Boot Demo - Google</h5>
+            <nav class="my-2 my-md-0 mr-md-3">
+                <a class="p-2 text-dark" href="#">Google</a>
+            </nav>
+        </div>
+
+        <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center container content">
+            <p id="initial-message">You're not logged in yet</p>
+
+            <div id="user-info" class="card hidden" style="width: 18rem">
+                <img class="card-img-top" alt="Profile picture">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                    <p class="card-text"></p>
+                    <a href="#" target="_blank" class="btn btn-primary">Go to Profile</a>
+                </div>
+            </div>
+
+            <h2 class="hidden">Items</h2>
+            <form class="hidden">
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control" placeholder="Enter description">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Save item</button>
+            </form>
+            <div class="btn-group hidden" role="group" aria-label="Retrieve items">
+                <button type="button" class="btn btn-secondary">Retrieve all</button>
+                <button type="button" class="btn btn-secondary">Retrieve visible</button>
+            </div>
+            <table class="table hidden">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">E-mail address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container">
+            <footer class="pt-4 my-md-5 pt-md-5 border-top">
+                <div class="row">
+                    <div class="col-12 col-md">
+                        <small class="d-block mb-3 text-muted">&copy; szgabsz91 <script>document.write(new Date().getFullYear());</script></small>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

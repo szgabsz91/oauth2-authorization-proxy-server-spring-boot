@@ -71,6 +71,8 @@ The currently supported external OAuth2 providers and their related configuratio
 |--------------------------|--------------------------------------------------------------------------|
 | Google                   | `oauth2.authorization.proxy.server.springboot.providers.google.clientId` |
 
+See the [`demo`](demo) project for more information.
+
 ## Details
 
 For more details, see the readme of the subprojects:
@@ -80,6 +82,7 @@ For more details, see the readme of the subprojects:
 * [providers/api](providers/api)
 * [providers/google](providers/google)
 * [starter](starter)
+* [demo](demo)
 
 ## Contribution
 

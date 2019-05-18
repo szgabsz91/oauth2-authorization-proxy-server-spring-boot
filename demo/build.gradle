@@ -1,0 +1,23 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation project(':starter')
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+	testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:${embeddedMongoVersion}"
+
+	implementation "org.webjars:webjars-locator:${webjarsLocatorVersion}"
+	implementation "org.webjars:bootstrap:${bootstrapVersion}"
+}
