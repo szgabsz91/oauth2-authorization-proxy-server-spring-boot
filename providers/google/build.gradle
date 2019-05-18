@@ -1,0 +1,7 @@
+dependencies {
+    api project(':providers:api')
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation "com.google.apis:google-api-services-oauth2:${googleApiServicesOAuth2Version}"
+}

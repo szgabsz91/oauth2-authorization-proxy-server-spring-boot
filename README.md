@@ -61,6 +61,16 @@ Maven:
 </dependency>
 ```
 
+Note that the actual external OAuth2 providers will be only instantiated if their related configuration properties are
+present. This way if you want to use only Facebook and not Google, you can omit the configuration properties of Google
+and it won't be used.
+
+The currently supported external OAuth2 providers and their related configuration properties are the following:
+
+| External OAuth2 provider | Configuration property                                                   |
+|--------------------------|--------------------------------------------------------------------------|
+| Google                   | `oauth2.authorization.proxy.server.springboot.providers.google.clientId` |
+
 ## Details
 
 For more details, see the readme of the subprojects:
@@ -68,6 +78,7 @@ For more details, see the readme of the subprojects:
 * [core](core)
 * [providers](providers)
 * [providers/api](providers/api)
+* [providers/google](providers/google)
 * [starter](starter)
 
 ## Contribution
