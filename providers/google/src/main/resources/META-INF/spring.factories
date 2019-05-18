@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.google.configuration.GoogleOAuth2ProviderAutoConfiguration
