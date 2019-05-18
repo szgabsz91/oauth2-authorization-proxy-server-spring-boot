@@ -2,6 +2,7 @@
 
 These subprojects contain the integration code for the supported external OAuth2 providers:
 
+* [Facebook](facebook)
 * [Google](google)
 
 and their API:
