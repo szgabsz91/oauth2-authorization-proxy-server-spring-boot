@@ -1,0 +1,58 @@
+version: 2
+jobs:
+    build:
+
+        working_directory: ~/oauth2-authorization-proxy-server-spring-boot
+
+        docker:
+            - image: openjdk:12-jdk-oracle
+
+        steps:
+
+            - checkout
+
+            - run:
+                name: Clean
+                command: ./gradlew clean
+
+            - run:
+                name: Compile
+                command: ./gradlew compileJava compileTestJava assemble
+
+            - run:
+                name: Test
+                command: ./gradlew test
+
+            - run:
+                name: Check
+                command: ./gradlew check
+
+            - run:
+                name: Test coverage
+                command: ./gradlew jacocoTestReport
+
+            - run:
+                name: Javadoc
+                command: ./gradlew javadoc
+
+            - run:
+                name: Javadoc aggregation
+                command: ./gradlew aggregateJavadocs
+
+            - run:
+                name: Collect test results
+                command: |
+                    mkdir -p ~/oauth2-authorization-proxy-server-spring-boot/build/test-report
+                    find . -type f -name "TEST*.xml" -exec cp {} ~/oauth2-authorization-proxy-server-spring-boot/build/test-report \;
+                when: always
+
+            - run:
+                name: Collect artifacts
+                command: ./.circleci/collect-artifacts.sh
+                when: always
+
+            - store_test_results:
+                path: ~/oauth2-authorization-proxy-server-spring-boot/build/test-report
+
+            - store_artifacts:
+                path: ~/oauth2-authorization-proxy-server-spring-boot/build/libs
