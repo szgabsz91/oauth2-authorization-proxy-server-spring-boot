@@ -1,0 +1,7 @@
+rootProject.name = 'oauth2-authorization-proxy-server-spring-boot'
+
+include ':core'
+
+include ':providers:api'
+
+include ':starter'
