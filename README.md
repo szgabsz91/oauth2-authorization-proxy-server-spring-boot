@@ -69,6 +69,7 @@ The currently supported external OAuth2 providers and their related configuratio
 
 | External OAuth2 provider | Configuration property                                                   |
 |--------------------------|--------------------------------------------------------------------------|
+| Facebook                 | `oauth2.authorization.proxy.server.springboot.providers.facebook.appId`  |
 | Google                   | `oauth2.authorization.proxy.server.springboot.providers.google.clientId` |
 
 See the [`demo`](demo) project for more information.
@@ -80,6 +81,7 @@ For more details, see the readme of the subprojects:
 * [core](core)
 * [providers](providers)
 * [providers/api](providers/api)
+* [providers/facebook](providers/facebook)
 * [providers/google](providers/google)
 * [starter](starter)
 * [demo](demo)
