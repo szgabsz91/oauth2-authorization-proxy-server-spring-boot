@@ -6,3 +6,5 @@ include ':providers:api'
 include ':providers:google'
 
 include ':starter'
+
+include ':demo'

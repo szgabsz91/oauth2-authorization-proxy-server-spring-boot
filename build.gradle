@@ -3,7 +3,6 @@ buildscript {
         javaVersion = 12
         bootstrapVersion = '4.3.1'
         embeddedMongoVersion = '2.2.0'
-        facebook4jVersion = '2.4.13'
         googleApiServicesOAuth2Version = 'v2-rev150-1.25.0'
         jacocoVersion = '0.8.4'
         lombokVersion = '1.18.8'
