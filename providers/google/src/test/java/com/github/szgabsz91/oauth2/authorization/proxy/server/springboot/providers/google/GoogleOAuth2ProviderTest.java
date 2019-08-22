@@ -142,7 +142,7 @@ public class GoogleOAuth2ProviderTest {
     }
 
     @Test
-    public void testLoadUserInfoWithSuccessFulMeRequest() throws IOException {
+    public void testLoadUserInfoWithSuccessFullMeRequest() throws IOException {
         var accessToken = "access-token";
         var tokenInfo = new Tokeninfo()
                 .setAudience(this.properties.getClientId());
@@ -171,6 +171,51 @@ public class GoogleOAuth2ProviderTest {
                 .name(userInfoPlus.getName())
                 .gender(userInfoPlus.getGender())
                 .link(URI.create(userInfoPlus.getLink()))
+                .picture(URI.create(userInfoPlus.getPicture()))
+                .build();
+
+        StepVerifier.create(result)
+                .expectNext(expected)
+                .expectComplete()
+                .verify();
+
+        verify(this.oauth2).tokeninfo();
+        verify(this.tokenInfo).setAccessToken(accessToken);
+        verify(this.tokenInfo).execute();
+        verify(this.oauth2).userinfo();
+        verify(this.userInfo).v2();
+        verify(this.v2).me();
+        verify(this.me).get();
+        verify(this.get).setOauthToken(accessToken);
+        verify(this.get).execute();
+    }
+
+    @Test
+    public void testLoadUserInfoWithSuccessPartialMeRequest() throws IOException {
+        var accessToken = "access-token";
+        var tokenInfo = new Tokeninfo()
+                .setAudience(this.properties.getClientId());
+        var userInfoPlus = new Userinfoplus()
+                .setId("id")
+                .setEmail("email")
+                .setName("name")
+                .setPicture("picture");
+
+        when(this.oauth2.tokeninfo()).thenReturn(this.tokenInfo);
+        when(this.tokenInfo.setAccessToken(accessToken)).thenReturn(this.tokenInfo);
+        when(this.tokenInfo.execute()).thenReturn(tokenInfo);
+        when(this.oauth2.userinfo()).thenReturn(this.userInfo);
+        when(this.userInfo.v2()).thenReturn(this.v2);
+        when(this.v2.me()).thenReturn(this.me);
+        when(this.me.get()).thenReturn(this.get);
+        when(this.get.setOauthToken(accessToken)).thenReturn(this.get);
+        when(this.get.execute()).thenReturn(userInfoPlus);
+
+        var result = this.googleOAuth2Provider.loadUserInfo(accessToken);
+        var expected = UserInfo.builder()
+                .id(userInfoPlus.getId())
+                .email(userInfoPlus.getEmail())
+                .name(userInfoPlus.getName())
                 .picture(URI.create(userInfoPlus.getPicture()))
                 .build();
 
