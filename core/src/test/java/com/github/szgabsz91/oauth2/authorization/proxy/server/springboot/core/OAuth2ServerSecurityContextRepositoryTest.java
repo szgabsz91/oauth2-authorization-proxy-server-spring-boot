@@ -14,6 +14,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -71,6 +72,8 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .thenReturn(this.serverHttpRequest);
         when(this.serverHttpRequest.getHeaders())
                 .thenReturn(httpHeaders);
+        when(this.serverHttpRequest.getQueryParams())
+                .thenReturn(new LinkedMultiValueMap<>());
 
         var result = this.serverSecurityContextRepository.load(serverWebExchange);
 
@@ -78,8 +81,9 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .expectComplete()
                 .verify();
 
-        verify(this.serverWebExchange, times(2)).getRequest();
+        verify(this.serverWebExchange, times(4)).getRequest();
         verify(this.serverHttpRequest, times(2)).getHeaders();
+        verify(this.serverHttpRequest, times(2)).getQueryParams();
         verify(this.userAuthenticationListener).authenticationFailed(null, null);
     }
 
@@ -95,6 +99,8 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .thenReturn(this.serverHttpRequest);
         when(this.serverHttpRequest.getHeaders())
                 .thenReturn(httpHeaders);
+        when(this.serverHttpRequest.getQueryParams())
+                .thenReturn(new LinkedMultiValueMap<>());
         when(this.facebookOAuth2Provider.supports(oauth2ProviderId))
                 .thenReturn(false);
 
@@ -104,8 +110,9 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .expectComplete()
                 .verify();
 
-        verify(this.serverWebExchange, times(2)).getRequest();
+        verify(this.serverWebExchange, times(4)).getRequest();
         verify(this.serverHttpRequest, times(2)).getHeaders();
+        verify(this.serverHttpRequest, times(2)).getQueryParams();
         verify(this.facebookOAuth2Provider).supports(oauth2ProviderId);
         verify(this.userAuthenticationListener).authenticationFailed(null, null);
     }
@@ -123,6 +130,8 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .thenReturn(this.serverHttpRequest);
         when(this.serverHttpRequest.getHeaders())
                 .thenReturn(httpHeaders);
+        when(this.serverHttpRequest.getQueryParams())
+                .thenReturn(new LinkedMultiValueMap<>());
         when(this.facebookOAuth2Provider.supports(oauth2ProviderId))
                 .thenReturn(true);
         when(this.facebookOAuth2Provider.loadUserInfo(accessToken))
@@ -134,15 +143,16 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .expectComplete()
                 .verify();
 
-        verify(this.serverWebExchange, times(2)).getRequest();
+        verify(this.serverWebExchange, times(4)).getRequest();
         verify(this.serverHttpRequest, times(2)).getHeaders();
+        verify(this.serverHttpRequest, times(2)).getQueryParams();
         verify(this.facebookOAuth2Provider).supports(oauth2ProviderId);
         verify(this.facebookOAuth2Provider).loadUserInfo(accessToken);
         verify(this.userAuthenticationListener).authenticationFailed(oauth2ProviderId, accessToken);
     }
 
     @Test
-    public void testLoadWithSupportedOAuth2ProviderIdAndAuthenticationSuccess() {
+    public void testLoadWithSupportedOAuth2ProviderIdInHeaderAndAuthenticationSuccess() {
         var oauth2ProviderId = "Facebook";
         var accessToken = "access-token";
         var userInfo = UserInfo.builder()
@@ -162,6 +172,8 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .thenReturn(this.serverHttpRequest);
         when(this.serverHttpRequest.getHeaders())
                 .thenReturn(httpHeaders);
+        when(this.serverHttpRequest.getQueryParams())
+                .thenReturn(new LinkedMultiValueMap<>());
         when(this.facebookOAuth2Provider.supports(oauth2ProviderId))
                 .thenReturn(true);
         when(this.facebookOAuth2Provider.loadUserInfo(accessToken))
@@ -177,8 +189,55 @@ public class OAuth2ServerSecurityContextRepositoryTest {
                 .expectComplete()
                 .verify();
 
-        verify(this.serverWebExchange, times(2)).getRequest();
+        verify(this.serverWebExchange, times(4)).getRequest();
         verify(this.serverHttpRequest, times(2)).getHeaders();
+        verify(this.serverHttpRequest, times(2)).getQueryParams();
+        verify(this.facebookOAuth2Provider).supports(oauth2ProviderId);
+        verify(this.facebookOAuth2Provider).loadUserInfo(accessToken);
+        verify(this.userAuthenticationListener).authenticationSuccessful(userInfo);
+    }
+
+    @Test
+    public void testLoadWithSupportedOAuth2ProviderIdInQueryParametersAndAuthenticationSuccess() {
+        var oauth2ProviderId = "Facebook";
+        var accessToken = "access-token";
+        var userInfo = UserInfo.builder()
+                .id("id")
+                .email("email")
+                .name("name")
+                .gender("gender")
+                .link(URI.create("https://google.com"))
+                .picture(URI.create("https://facebook.com"))
+                .build();
+
+        var queryParameters = new LinkedMultiValueMap<String, String>();
+        queryParameters.add(OAuth2ServerSecurityContextRepository.QUERY_PARAMETER_OAUTH2_PROVIDER, oauth2ProviderId);
+        queryParameters.add(OAuth2ServerSecurityContextRepository.QUERY_PARAMETER_ACCESS_TOKEN, accessToken);
+
+        when(this.serverWebExchange.getRequest())
+                .thenReturn(this.serverHttpRequest);
+        when(this.serverHttpRequest.getHeaders())
+                .thenReturn(new HttpHeaders());
+        when(this.serverHttpRequest.getQueryParams())
+                .thenReturn(queryParameters);
+        when(this.facebookOAuth2Provider.supports(oauth2ProviderId))
+                .thenReturn(true);
+        when(this.facebookOAuth2Provider.loadUserInfo(accessToken))
+                .thenReturn(Mono.just(userInfo));
+
+        var result = this.serverSecurityContextRepository.load(serverWebExchange);
+
+        StepVerifier.create(result)
+                .expectNextMatches(securityContext -> securityContext.getAuthentication() instanceof OAuth2Authentication &&
+                        ((OAuth2Authentication) securityContext.getAuthentication()).getPrincipal().equals(userInfo) &&
+                        ((OAuth2Authentication) securityContext.getAuthentication()).getAuthorities().equals(Set.of(this.authorizedUserAuthority))
+                )
+                .expectComplete()
+                .verify();
+
+        verify(this.serverWebExchange, times(4)).getRequest();
+        verify(this.serverHttpRequest, times(2)).getHeaders();
+        verify(this.serverHttpRequest, times(2)).getQueryParams();
         verify(this.facebookOAuth2Provider).supports(oauth2ProviderId);
         verify(this.facebookOAuth2Provider).loadUserInfo(accessToken);
         verify(this.userAuthenticationListener).authenticationSuccessful(userInfo);

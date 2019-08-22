@@ -18,6 +18,9 @@ const retrieveButtons = document.querySelectorAll('.btn-group .btn');
 const retrieveAllButton = retrieveButtons[0];
 const retrieveVisibleButton = retrieveButtons[1];
 const itemTableBody = document.querySelector('.table tbody');
+const imageContainer = document.querySelector('#image-container');
+const image = imageContainer.querySelector('img');
+const toggleAccessTokenButton = imageContainer.querySelector('button');
 
 saveItemForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -27,6 +30,8 @@ saveItemForm.addEventListener('submit', event => {
 retrieveAllButton.addEventListener('click', retrieveAll);
 
 retrieveVisibleButton.addEventListener('click', retrieveVisible);
+
+toggleAccessTokenButton.addEventListener('click', toggleAccessToken);
 
 function login() {
     const options = {
@@ -39,6 +44,7 @@ function login() {
         }
 
         createHeader(response.authResponse.accessToken);
+        toggleAccessTokenButton.disabled = false;
     }, options);
 }
 
@@ -152,6 +158,19 @@ function retrieve(all) {
             });
         })
         .catch(error => console.error('Retrieve error', error));
+}
+
+function toggleAccessToken() {
+    const url = new URL(image.src);
+    const searchParams = url.searchParams;
+    if (searchParams.get('access_token')) {
+        image.src = url.pathname;
+    }
+    else {
+        searchParams.set('oauth2_provider', storage.oauth2Provider);
+        searchParams.set('access_token', storage.accessToken);
+        image.src = url.pathname + url.search;
+    }
 }
 
 window.fbAsyncInit = function() {

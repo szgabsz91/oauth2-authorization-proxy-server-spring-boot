@@ -32,6 +32,10 @@ html {
     margin: auto;
 }
 
+#image-container img {
+    max-height: 50px;
+}
+
 .hidden {
     display: none;
 }
