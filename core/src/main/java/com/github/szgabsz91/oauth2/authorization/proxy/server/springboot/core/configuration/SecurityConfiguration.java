@@ -1,8 +1,8 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.configuration;
 
+import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.DummyOAuth2ServerSecurityContextRepository;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.IUserAuthenticationListener;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.OAuth2ServerSecurityContextRepository;
-import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.DummyOAuth2ServerSecurityContextRepository;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.IOAuth2Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 
 /**
@@ -70,6 +72,11 @@ public class SecurityConfiguration implements ApplicationContextAware {
         var authorizedUserAuthority = configurer.getAuthorizedUserAuthority();
         filterChainBuilder
                     .anyExchange().hasAuthority(authorizedUserAuthority.getAuthority());
+
+        filterChainBuilder
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
 
         return filterChainBuilder.and().build();
     }
