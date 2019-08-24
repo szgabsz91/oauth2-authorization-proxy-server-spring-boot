@@ -86,6 +86,10 @@ For more details, see the readme of the subprojects:
 * [starter](starter)
 * [demo](demo)
 
+## Client Libraries
+
+See the [OAuth2 Authorization Proxy Client](https://github.com/szgabsz91/oauth2-authorization-proxy-client) project for supported client libraries that manage authentication, token handling, image protection and more.
+
 ## Contribution
 
 Everybody is encouraged to create new feature requests or even implement the already precategorized tickets in the
