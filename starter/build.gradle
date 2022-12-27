@@ -1,6 +1,6 @@
 dependencies {
 	api project(':core')
-	api project(':providers:api')
-	api project(':providers:facebook')
-	api project(':providers:google')
+	api project(':provider-api')
+	api project(':provider-facebook')
+	api project(':provider-google')
 }

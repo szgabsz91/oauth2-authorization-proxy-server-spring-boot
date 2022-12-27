@@ -1,44 +1,66 @@
-version: 2
-jobs:
-    build:
+version: 2.1
 
-        working_directory: ~/oauth2-authorization-proxy-server-spring-boot
-
+executors:
+    default-executor:
         docker:
             - image: openjdk:17-jdk-oracle
+        working_directory: ~/oauth2-authorization-proxy-server-spring-boot
 
+jobs:
+    build:
+        executor: default-executor
         steps:
-
             - checkout
-
             - run:
                 name: Clean
                 command: ./gradlew clean
-
             - run:
                 name: Compile
                 command: ./gradlew compileJava compileTestJava assemble
-
             - run:
                 name: Test
                 command: ./gradlew test
-
             - run:
                 name: Test coverage
                 command: ./gradlew jacocoTestReport
-
             - run:
                 name: Javadoc
                 command: ./gradlew javadoc
-
-            - run:
-                name: Javadoc aggregation
-                command: ./gradlew aggregateJavadocs
-
             - run:
                 name: Collect artifacts
                 command: ./.circleci/collect-artifacts.sh
                 when: always
-
             - store_artifacts:
                 path: ~/oauth2-authorization-proxy-server-spring-boot/build/libs
+            - persist_to_workspace:
+                root: .
+                paths:
+                    - .
+
+    publish-release:
+        executor: default-executor
+        steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Publish to Maven Central
+                command: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+
+workflows:
+    version: 2
+    build-and-publish:
+        jobs:
+            - build:
+                  filters:
+                      tags:
+                          only: /.+/
+                      branches:
+                          only: /.+/
+            - publish-release:
+                  filters:
+                      tags:
+                          only: /.+/
+                      branches:
+                          ignore: /.*/
+                  requires:
+                      - build
