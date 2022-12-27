@@ -1,5 +1,5 @@
 dependencies {
-    api project(':providers:api')
+    api project(':provider-api')
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 

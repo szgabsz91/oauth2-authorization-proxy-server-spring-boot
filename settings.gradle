@@ -2,10 +2,14 @@ rootProject.name = 'oauth2-authorization-proxy-server-spring-boot'
 
 include ':core'
 
-include ':providers:api'
-include ':providers:facebook'
-include ':providers:google'
+include 'provider-api'
+include 'provider-facebook'
+include 'provider-google'
 
 include ':starter'
 
 include ':demo'
+
+project(':provider-api').projectDir = file('providers/api')
+project(':provider-facebook').projectDir = file('providers/facebook')
+project(':provider-google').projectDir = file('providers/google')

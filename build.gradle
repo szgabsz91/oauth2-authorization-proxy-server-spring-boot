@@ -1,6 +1,10 @@
 buildscript {
     ext {
+        oauth2AuthorizationProxyGroupId = 'com.github.szgabsz91'
+        oauth2AuthorizationProxyVersion = '1.0.0-SNAPSHOT'
+
         javaVersion = 17
+
         bootstrapVersion = '5.2.3'
         embeddedMongoVersion = '4.3.3'
         facebook4jVersion = '2.4.13'
@@ -10,7 +14,13 @@ buildscript {
         springBootVersion = '3.0.1'
         springDependencyManagementPluginVersion = '1.1.0'
         webjarsLocatorVersion = '0.46'
-        gradleAggregateJavadocsPluginVersion = '3.0.1'
+        publishPluginVersion = '1.1.0'
+
+        signingKeyId = System.getenv('SIGNING_KEY_ID')
+        signingKey = new String(System.getenv('SIGNING_KEY').decodeBase64())
+        signingPassword = System.getenv('SIGNING_PASSWORD')
+        mavenCentralUsername = System.getenv('MAVEN_CENTRAL_USERNAME')
+        mavenCentralPassword = System.getenv('MAVEN_CENTRAL_PASSWORD')
     }
 
     repositories {
@@ -23,11 +33,24 @@ buildscript {
 
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementPluginVersion}"
-        classpath "com.netflix.nebula:gradle-aggregate-javadocs-plugin:${gradleAggregateJavadocsPluginVersion}"
+        classpath "io.github.gradle-nexus:publish-plugin:${publishPluginVersion}"
     }
 }
 
-apply plugin: 'nebula-aggregate-javadocs'
+gradle.rootProject {
+    apply plugin: 'io.github.gradle-nexus.publish-plugin'
+
+    group = oauth2AuthorizationProxyGroupId
+
+    nexusPublishing {
+        repositories {
+            sonatype {
+                username = project.mavenCentralUsername
+                password = project.mavenCentralPassword
+            }
+        }
+    }
+}
 
 subprojects {
     apply plugin: 'java-library'
@@ -36,17 +59,17 @@ subprojects {
     apply plugin: 'idea'
 
     group = 'com.github.szgabsz91'
-    version = '1.0.0-SNAPSHOT'
-
-    def additionalNameParts = project.rootDir.toPath().relativize(project.projectDir.toPath()).toString().split('/')
-    archivesBaseName = "${project.rootProject.name}-${additionalNameParts.join('-')}"
+    version = oauth2AuthorizationProxyVersion
 
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 
     tasks.withType(JavaCompile) {
+        sourceCompatibility = project.javaVersion
+        targetCompatibility = project.javaVersion
         options.encoding = 'UTF-8'
         options.compilerArgs << '-Xlint:unchecked'
+        options.deprecation = true
     }
 
     jacoco {
@@ -83,4 +106,110 @@ subprojects {
         testImplementation 'io.projectreactor:reactor-test'
         testImplementation 'org.mockito:mockito-junit-jupiter'
     }
+}
+
+configure(subprojects.findAll { it.name != 'demo' }) {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    def additionalNameParts = project.rootDir.toPath().relativize(project.projectDir.toPath()).toString().split('/')
+    archivesBaseName = "${project.rootProject.name}-${additionalNameParts.join('-')}"
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier.set('javadoc')
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    signing {
+        useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
+        sign configurations.archives
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) { publication ->
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                pom {
+                    packaging = 'jar'
+                    artifactId = "oauth2-authorization-proxy-server-spring-boot-${project.name}"
+                    name = "oauth2-authorization-proxy-server-spring-boot-${project.name}"
+                    description = "OAuth2 Authorization Proxy Server Spring Boot ${project.name.split('-').toList().collect({ it == 'api' ? 'API' : (it[0].toUpperCase() + it.substring(1)) }).join(' ')}"
+                    inceptionYear = '2018'
+                    url = 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
+                    organization {
+                        name = 'szgabsz91'
+                    }
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'http://www.opensource.org/licenses/mit-license.php'
+                            distribution = 'repo'
+                        }
+                    }
+                    issueManagement {
+                        system = 'Github'
+                        url = 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/issues'
+                    }
+                    ciManagement {
+                        system = 'CircleCI'
+                        url = 'https://travis-ci.org/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
+                    }
+                    scm {
+                        connection = 'scm:git:git@github.com:szgabsz91/oauth2-authorization-proxy-server-spring-boot.git'
+                        developerConnection = 'scm:git:git@github.com:szgabsz91/oauth2-authorization-proxy-server-spring-boot.git'
+                        url = 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
+                        tag = 'HEAD'
+                    }
+                    developers {
+                        developer {
+                            id = 'szgabsz91'
+                            name = 'Gabor Szabo'
+                            email = 'szgabsz91@gmail.com'
+                        }
+                    }
+                }
+
+                signArchives.signatures.each { signature ->
+                    artifact(signature) {
+                        extension signature.type
+                    }
+                }
+
+                artifact(file("$buildDir/publications/$publication.name/pom-default.xml.asc")) {
+                    extension 'pom.asc'
+                    builtBy signArchives
+                }
+
+                artifact(file("$buildDir/publications/$publication.name/module.json.asc")) {
+                    extension 'module.asc'
+                    builtBy signArchives
+                }
+            }
+        }
+    }
+
+    tasks.withType(GenerateMavenPom) {
+        signArchives.dependsOn it
+        signArchives.sign it.outputs.files.singleFile
+    }
+
+    tasks.withType(GenerateModuleMetadata) {
+        signArchives.dependsOn it
+        signArchives.sign it.outputs.files.singleFile
+    }
+
+    build.dependsOn publishToMavenLocal
 }
