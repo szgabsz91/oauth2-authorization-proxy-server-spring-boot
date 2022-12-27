@@ -9,59 +9,60 @@
         <script src="facebook.js" async defer></script>
     </head>
     <body>
-        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-            <h5 class="my-0 mr-md-auto font-weight-normal">OAuth2 Authorization Proxy Server Spring Boot Demo - Facebook</h5>
-            <nav class="my-2 my-md-0 mr-md-3">
-                <a class="p-2 text-dark" href="#">Facebook</a>
-                <a class="p-2 text-dark" href="google.html">Google</a>
-            </nav>
-        </div>
-
-        <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center container content">
-            <p id="initial-message">You're not logged in yet</p>
-
-            <div id="user-info" class="card hidden" style="width: 18rem">
-                <img class="card-img-top" alt="Profile picture">
-                <div class="card-body">
-                    <h5 class="card-title"></h5>
-                    <p class="card-text"></p>
-                    <p class="card-text"></p>
-                    <a href="#" target="_blank" class="btn btn-primary">Go to Profile</a>
-                </div>
-            </div>
-
-            <h2 class="hidden">Items</h2>
-            <form class="hidden">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="text" class="form-control" placeholder="Enter description">
-                </div>
-                <button type="submit" class="btn btn-primary mb-2">Save item</button>
-            </form>
-            <div class="btn-group hidden" role="group" aria-label="Retrieve items">
-                <button type="button" class="btn btn-secondary">Retrieve all</button>
-                <button type="button" class="btn btn-secondary">Retrieve visible</button>
-            </div>
-            <table class="table hidden">
-                <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">E-mail address</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
-            <div id="image-container" class="text-center">
-                <p>
-                    <img src="image" alt="Spring Boot logo">
-                </p>
-                <button type="button" disabled class="btn btn-secondary">Toggle access token</button>
-            </div>
-        </div>
-
         <div class="container">
+            <div class="d-flex flex-column flex-md-row align-items-center pb-3 pt-3 mb-4 border-bottom">
+                <h5 class="d-flex align-items-center text-dark text-decoration-none">OAuth2 Authorization Proxy Server Spring Boot Demo - Facebook</h5>
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="#">Facebook</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="google.html">Google</a>
+                </nav>
+            </div>
+
+            <div class="px-3 py-3 pb-md-4 mx-auto text-center">
+                <p id="initial-message">You're not logged in yet</p>
+
+                <div id="user-info" class="card mx-auto mb-4 hidden" style="width: 18rem">
+                    <img class="card-img-top mt-3" alt="Profile picture">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text"></p>
+                        <p class="card-text"></p>
+                        <a href="#" target="_blank" class="btn btn-primary">Go to Profile</a>
+                    </div>
+                </div>
+
+                <h2 class="mt-5 hidden">Items</h2>
+                <form class="hidden">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" placeholder="Enter description">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Save item</button>
+                </form>
+
+                <div class="btn-group mt-5 mb-2 hidden" role="group" aria-label="Retrieve items">
+                    <button type="button" class="btn btn-secondary">Retrieve all</button>
+                    <button type="button" class="btn btn-secondary">Retrieve visible</button>
+                </div>
+                <table class="table hidden">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">E-mail address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <div id="image-container" class="mt-5 text-center">
+                    <p>
+                        <img src="image" alt="Spring Boot logo">
+                    </p>
+                    <button type="button" disabled class="btn btn-secondary">Toggle access token</button>
+                </div>
+            </div>
+
             <footer class="pt-4 my-md-5 pt-md-5 border-top">
                 <div class="row">
                     <div class="col-12 col-md">

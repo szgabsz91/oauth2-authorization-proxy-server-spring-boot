@@ -1,16 +1,15 @@
 buildscript {
     ext {
-        javaVersion = 12
-        bootstrapVersion = '4.3.1'
-        embeddedMongoVersion = '2.2.0'
+        javaVersion = 17
+        bootstrapVersion = '5.2.3'
+        embeddedMongoVersion = '4.3.3'
         facebook4jVersion = '2.4.13'
-        googleApiServicesOAuth2Version = 'v2-rev150-1.25.0'
-        jacocoVersion = '0.8.4'
-        lombokVersion = '1.18.8'
-        springBootVersion = '2.1.5.RELEASE'
-        springDependencyManagementPluginVersion = '1.0.6.RELEASE'
-        webjarsLocatorVersion = '0.36'
-        spotbugsGradlePluginVersion = '2.0.0'
+        googleApiServicesOAuth2Version = 'v2-rev157-1.25.0'
+        jacocoVersion = '0.8.8'
+        lombokVersion = '1.18.24'
+        springBootVersion = '3.0.1'
+        springDependencyManagementPluginVersion = '1.1.0'
+        webjarsLocatorVersion = '0.46'
         gradleAggregateJavadocsPluginVersion = '3.0.1'
     }
 
@@ -24,7 +23,6 @@ buildscript {
 
     dependencies {
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyManagementPluginVersion}"
-        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:${spotbugsGradlePluginVersion}"
         classpath "com.netflix.nebula:gradle-aggregate-javadocs-plugin:${gradleAggregateJavadocsPluginVersion}"
     }
 }
@@ -34,10 +32,8 @@ apply plugin: 'nebula-aggregate-javadocs'
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'jacoco'
-    apply plugin: 'maven'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'idea'
-    apply plugin: 'com.github.spotbugs'
 
     group = 'com.github.szgabsz91'
     version = '1.0.0-SNAPSHOT'
@@ -53,11 +49,6 @@ subprojects {
         options.compilerArgs << '-Xlint:unchecked'
     }
 
-    spotbugs {
-        effort = 'max'
-    }
-    spotbugsTest.enabled = false
-
     jacoco {
         toolVersion = jacocoVersion
     }
@@ -71,42 +62,6 @@ subprojects {
     }
     test.finalizedBy jacocoTestReport
 
-    install {
-        repositories.mavenInstaller {
-            pom.project {
-                inceptionYear '2018'
-                url 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'http://www.opensource.org/licenses/mit-license.php'
-                        distribution 'repo'
-                    }
-                }
-                issueManagement {
-                    system 'Github'
-                    url 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/issues'
-                }
-                ciManagement {
-                    system 'Travis CI'
-                    url 'https://travis-ci.org/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
-                }
-                scm {
-                    connection 'scm:git:git@github.com:szgabsz91/oauth2-authorization-proxy-server-spring-boot.git'
-                    developerConnection 'scm:git:git@github.com:szgabsz91/oauth2-authorization-proxy-server-spring-boot.git'
-                    url 'https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot'
-                    tag 'HEAD'
-                }
-                developers {
-                    developer {
-                        name 'szgabsz91'
-                        email 'szgabsz91@gmail.com'
-                    }
-                }
-            }
-        }
-    }
-
     repositories {
         mavenCentral()
     }
@@ -119,11 +74,13 @@ subprojects {
 
     dependencies {
         api 'org.springframework.boot:spring-boot-starter'
+        api 'org.springframework.boot:spring-boot-starter-validation'
 
         implementation "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'io.projectreactor:reactor-test'
+        testImplementation 'org.mockito:mockito-junit-jupiter'
     }
 }

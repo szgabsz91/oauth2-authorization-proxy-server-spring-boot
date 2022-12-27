@@ -158,27 +158,24 @@ function createHeader(accessToken) {
     showElements();
 }
 
-function initClient() {
-    return gapi.client.init({
-        discoveryDocs: ["https://people.googleapis.com/$discovery/rest?version=v1"],
-        clientId: '692293897979-f8l8e01f513evte972148bhc73jbnl2v.apps.googleusercontent.com',
-        scope: 'openid email'
-    }).then(() => {
-        return gapi.auth2.getAuthInstance().signIn().then(response => {
-            createHeader(response.Zi.access_token);
-            toggleAccessTokenButton.disabled = false;
-        });
-    });
-}
-
 function handleClientLoad() {
-    gapi.load('client:auth2', initClient);
+    const client = google.accounts.oauth2.initTokenClient({
+        client_id: '692293897979-f8l8e01f513evte972148bhc73jbnl2v.apps.googleusercontent.com',
+        scope: 'openid email profile',
+        callback: (response) => {
+            console.log('response', response);
+            createHeader(response.access_token);
+            toggleAccessTokenButton.disabled = false;
+        }
+    });
+
+    client.requestAccessToken();
 }
 
 const script = document.createElement('script');
 script.async = '';
 script.defer = '';
-script.src = 'https://apis.google.com/js/api.js';
+script.src = 'https://accounts.google.com/gsi/client';
 script.onload = handleClientLoad;
 script.onreadystatechange = () => {
     if (this.readyState === 'complete') {

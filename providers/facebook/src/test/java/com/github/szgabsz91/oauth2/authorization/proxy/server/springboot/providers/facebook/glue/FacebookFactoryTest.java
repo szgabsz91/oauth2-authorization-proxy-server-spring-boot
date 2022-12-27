@@ -1,15 +1,15 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.facebook.glue;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.facebook.configuration.FacebookOAuth2ProviderAutoConfiguration;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = FacebookOAuth2ProviderAutoConfiguration.class)
 public class FacebookFactoryTest {
 

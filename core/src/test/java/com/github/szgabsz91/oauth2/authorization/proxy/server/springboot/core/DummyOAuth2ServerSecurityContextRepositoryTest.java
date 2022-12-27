@@ -1,11 +1,11 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.model.UserInfo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
@@ -16,7 +16,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class DummyOAuth2ServerSecurityContextRepositoryTest {
 
     private ServerSecurityContextRepository serverSecurityContextRepository;
@@ -26,7 +26,7 @@ public class DummyOAuth2ServerSecurityContextRepositoryTest {
     @Mock
     private IUserAuthenticationListener userAuthenticationListener;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.authorizedUserAuthority = new SimpleGrantedAuthority("USER");
         this.dummyUserInfo = UserInfo.builder()

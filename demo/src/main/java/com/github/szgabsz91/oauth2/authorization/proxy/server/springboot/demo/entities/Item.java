@@ -1,5 +1,6 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.demo.entities;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * Spring Data entity to store items that contain an id, a description and an e-mail address.

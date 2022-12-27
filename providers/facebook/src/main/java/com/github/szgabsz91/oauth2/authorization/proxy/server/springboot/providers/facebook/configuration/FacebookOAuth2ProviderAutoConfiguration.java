@@ -3,17 +3,17 @@ package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.provid
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.facebook.FacebookOAuth2Provider;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.facebook.glue.FacebookFactory;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.IOAuth2Provider;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * AutoConfiguration class for the {@link FacebookOAuth2Provider}.
  *
  * @author szgabsz91
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties(FacebookOAuth2ProviderConfigurationProperties.class)
 public class FacebookOAuth2ProviderAutoConfiguration {
 

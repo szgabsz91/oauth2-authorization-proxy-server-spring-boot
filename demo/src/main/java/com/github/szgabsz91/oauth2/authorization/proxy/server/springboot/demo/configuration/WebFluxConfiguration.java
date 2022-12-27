@@ -32,7 +32,7 @@ public class WebFluxConfiguration {
                 request ->
                         ok()
                         .contentType(MediaType.TEXT_HTML)
-                        .syncBody(indexHtml)
+                        .bodyValue(indexHtml)
         );
     }
 

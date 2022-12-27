@@ -1,11 +1,11 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.model.UserInfo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UserInfoArgumentResolverTest {
 
     private UserInfoArgumentResolver userInfoArgumentResolver;
@@ -28,7 +28,7 @@ public class UserInfoArgumentResolverTest {
     @Mock
     private ServerWebExchange serverWebExchange;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.userInfoArgumentResolver = new UserInfoArgumentResolver();
     }

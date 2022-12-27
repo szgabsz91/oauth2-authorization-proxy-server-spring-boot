@@ -18,6 +18,7 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
 
 /**
  * Configuration for Spring Security that creates the Spring Security filter chain for authentication and authorization.
@@ -62,6 +63,10 @@ public class SecurityConfiguration implements ApplicationContextAware {
                 .logout().disable()
                 .securityContextRepository(serverSecurityContextRepository)
                 .authorizeExchange();
+
+        httpSecurity
+                .headers()
+                .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.ORIGIN);
 
         var antPatternsForPermitAll = configurer.getAntPatternsForPermitAll();
         if (antPatternsForPermitAll != null) {
