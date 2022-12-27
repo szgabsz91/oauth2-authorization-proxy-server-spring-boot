@@ -6,10 +6,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.oauth2.Oauth2;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
  *
  * @author szgabsz91
  */
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties(GoogleOAuth2ProviderConfigurationProperties.class)
 public class GoogleOAuth2ProviderAutoConfiguration {
 

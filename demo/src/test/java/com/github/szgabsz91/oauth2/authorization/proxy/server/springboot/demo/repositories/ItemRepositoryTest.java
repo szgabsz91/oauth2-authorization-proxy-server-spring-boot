@@ -1,15 +1,15 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.demo.repositories;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.demo.entities.Item;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.test.StepVerifier;
 
 @DataMongoTest
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ItemRepositoryTest {
 
     @Autowired

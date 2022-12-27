@@ -1,9 +1,8 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.model.UserInfo;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.net.URI;
@@ -12,9 +11,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OAuth2AuthenticationTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testConstructorAndGetters() {
@@ -41,10 +37,8 @@ public class OAuth2AuthenticationTest {
     public void testSetAuthenticated() {
         var oauth2Authentication = new OAuth2Authentication(null, null);
 
-        thrown.expect(UnsupportedOperationException.class);
-        thrown.expectMessage("Not supported");
-
-        oauth2Authentication.setAuthenticated(true);
+        var exception = Assertions.assertThrows(UnsupportedOperationException.class, () -> oauth2Authentication.setAuthenticated(true));
+        assertThat(exception).hasMessage("Not supported");
     }
 
 }

@@ -6,13 +6,13 @@ import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.provide
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.google.configuration.GoogleOAuth2ProviderAutoConfiguration;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Tokeninfo;
-import com.google.api.services.oauth2.model.Userinfoplus;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.google.api.services.oauth2.model.Userinfo;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = GoogleOAuth2ProviderAutoConfiguration.class)
 public class GoogleOAuth2ProviderTest {
 
@@ -146,7 +146,7 @@ public class GoogleOAuth2ProviderTest {
         var accessToken = "access-token";
         var tokenInfo = new Tokeninfo()
                 .setAudience(this.properties.getClientId());
-        var userInfoPlus = new Userinfoplus()
+        var userInfo = new Userinfo()
                 .setId("id")
                 .setEmail("email")
                 .setName("name")
@@ -162,16 +162,16 @@ public class GoogleOAuth2ProviderTest {
         when(this.v2.me()).thenReturn(this.me);
         when(this.me.get()).thenReturn(this.get);
         when(this.get.setOauthToken(accessToken)).thenReturn(this.get);
-        when(this.get.execute()).thenReturn(userInfoPlus);
+        when(this.get.execute()).thenReturn(userInfo);
 
         var result = this.googleOAuth2Provider.loadUserInfo(accessToken);
         var expected = UserInfo.builder()
-                .id(userInfoPlus.getId())
-                .email(userInfoPlus.getEmail())
-                .name(userInfoPlus.getName())
-                .gender(userInfoPlus.getGender())
-                .link(URI.create(userInfoPlus.getLink()))
-                .picture(URI.create(userInfoPlus.getPicture()))
+                .id(userInfo.getId())
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .gender(userInfo.getGender())
+                .link(URI.create(userInfo.getLink()))
+                .picture(URI.create(userInfo.getPicture()))
                 .build();
 
         StepVerifier.create(result)
@@ -195,7 +195,7 @@ public class GoogleOAuth2ProviderTest {
         var accessToken = "access-token";
         var tokenInfo = new Tokeninfo()
                 .setAudience(this.properties.getClientId());
-        var userInfoPlus = new Userinfoplus()
+        var userInfo = new Userinfo()
                 .setId("id")
                 .setEmail("email")
                 .setName("name")
@@ -209,14 +209,14 @@ public class GoogleOAuth2ProviderTest {
         when(this.v2.me()).thenReturn(this.me);
         when(this.me.get()).thenReturn(this.get);
         when(this.get.setOauthToken(accessToken)).thenReturn(this.get);
-        when(this.get.execute()).thenReturn(userInfoPlus);
+        when(this.get.execute()).thenReturn(userInfo);
 
         var result = this.googleOAuth2Provider.loadUserInfo(accessToken);
         var expected = UserInfo.builder()
-                .id(userInfoPlus.getId())
-                .email(userInfoPlus.getEmail())
-                .name(userInfoPlus.getName())
-                .picture(URI.create(userInfoPlus.getPicture()))
+                .id(userInfo.getId())
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .picture(URI.create(userInfo.getPicture()))
                 .build();
 
         StepVerifier.create(result)

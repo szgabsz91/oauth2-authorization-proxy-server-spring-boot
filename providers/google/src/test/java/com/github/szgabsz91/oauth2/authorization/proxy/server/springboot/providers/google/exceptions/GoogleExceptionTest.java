@@ -1,6 +1,6 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.google.exceptions;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -2,13 +2,11 @@ package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core;
 
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.IOAuth2Provider;
 import com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.providers.api.model.UserInfo;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,11 +20,13 @@ import reactor.test.StepVerifier;
 import java.net.URI;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OAuth2ServerSecurityContextRepositoryTest {
 
     private ServerSecurityContextRepository serverSecurityContextRepository;
@@ -45,10 +45,7 @@ public class OAuth2ServerSecurityContextRepositoryTest {
     @Mock
     private ServerHttpRequest serverHttpRequest;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         var oauth2Providers = Set.of(this.facebookOAuth2Provider);
         this.authorizedUserAuthority = new SimpleGrantedAuthority("USER");
@@ -58,10 +55,8 @@ public class OAuth2ServerSecurityContextRepositoryTest {
 
     @Test
     public void testSave() {
-        thrown.expect(UnsupportedOperationException.class);
-        thrown.expectMessage("Not supported");
-
-        this.serverSecurityContextRepository.save(null, null);
+        var exception = assertThrows(UnsupportedOperationException.class, () -> this.serverSecurityContextRepository.save(null, null));
+        assertThat(exception).hasMessage("Not supported");
     }
 
     @Test
@@ -184,7 +179,7 @@ public class OAuth2ServerSecurityContextRepositoryTest {
         StepVerifier.create(result)
                 .expectNextMatches(securityContext -> securityContext.getAuthentication() instanceof OAuth2Authentication &&
                         ((OAuth2Authentication) securityContext.getAuthentication()).getPrincipal().equals(userInfo) &&
-                        ((OAuth2Authentication) securityContext.getAuthentication()).getAuthorities().equals(Set.of(this.authorizedUserAuthority))
+                        securityContext.getAuthentication().getAuthorities().equals(Set.of(this.authorizedUserAuthority))
                 )
                 .expectComplete()
                 .verify();
@@ -230,7 +225,7 @@ public class OAuth2ServerSecurityContextRepositoryTest {
         StepVerifier.create(result)
                 .expectNextMatches(securityContext -> securityContext.getAuthentication() instanceof OAuth2Authentication &&
                         ((OAuth2Authentication) securityContext.getAuthentication()).getPrincipal().equals(userInfo) &&
-                        ((OAuth2Authentication) securityContext.getAuthentication()).getAuthorities().equals(Set.of(this.authorizedUserAuthority))
+                        securityContext.getAuthentication().getAuthorities().equals(Set.of(this.authorizedUserAuthority))
                 )
                 .expectComplete()
                 .verify();

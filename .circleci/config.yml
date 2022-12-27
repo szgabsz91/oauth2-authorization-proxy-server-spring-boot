@@ -5,7 +5,7 @@ jobs:
         working_directory: ~/oauth2-authorization-proxy-server-spring-boot
 
         docker:
-            - image: openjdk:12-jdk-oracle
+            - image: openjdk:17-jdk-oracle
 
         steps:
 
@@ -24,10 +24,6 @@ jobs:
                 command: ./gradlew test
 
             - run:
-                name: Check
-                command: ./gradlew check
-
-            - run:
                 name: Test coverage
                 command: ./gradlew jacocoTestReport
 
@@ -40,19 +36,9 @@ jobs:
                 command: ./gradlew aggregateJavadocs
 
             - run:
-                name: Collect test results
-                command: |
-                    mkdir -p ~/oauth2-authorization-proxy-server-spring-boot/build/test-report
-                    find . -type f -name "TEST*.xml" -exec cp {} ~/oauth2-authorization-proxy-server-spring-boot/build/test-report \;
-                when: always
-
-            - run:
                 name: Collect artifacts
                 command: ./.circleci/collect-artifacts.sh
                 when: always
-
-            - store_test_results:
-                path: ~/oauth2-authorization-proxy-server-spring-boot/build/test-report
 
             - store_artifacts:
                 path: ~/oauth2-authorization-proxy-server-spring-boot/build/libs

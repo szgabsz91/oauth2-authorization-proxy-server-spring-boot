@@ -1,7 +1,7 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.configuration;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,7 @@ public class OAuth2AuthorizationProxyConfigurerAdapterTest {
 
     private OAuth2AuthorizationProxyConfigurerAdapter oauth2AuthorizationProxyConfigurerAdapter;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.oauth2AuthorizationProxyConfigurerAdapter = new OAuth2AuthorizationProxyConfigurerAdapter();
     }

@@ -1,6 +1,6 @@
 package com.github.szgabsz91.oauth2.authorization.proxy.server.springboot.core.configuration;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
  *
  * @author szgabsz91
  */
-@Configuration
+@AutoConfiguration
 @Import({
         SecurityConfiguration.class,
         WebFluxConfiguration.class
