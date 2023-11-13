@@ -1,5 +1,9 @@
 # OAuth2 Authorization Proxy Server Spring Boot - Core
 
+[![Build Status](https://img.shields.io/circleci/project/github/szgabsz91/oauth2-authorization-proxy-server-spring-boot/master.svg)](https://circleci.com/gh/szgabsz91/workflows/oauth2-authorization-proxy-server-spring-boot)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-core)
+[![License](https://img.shields.io/github/license/szgabsz91/oauth2-authorization-proxy-server-spring-boot.svg)](https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/blob/master/LICENSE)
+
 This is the core subproject of `oauth2-authorization-proxy-server-spring-boot` that
 
 * creates the Spring Security filter chain,

@@ -1,5 +1,8 @@
 # OAuth2 Authorization Proxy Server Spring Boot - Demo
 
+[![Build Status](https://img.shields.io/circleci/project/github/szgabsz91/oauth2-authorization-proxy-server-spring-boot/master.svg)](https://circleci.com/gh/szgabsz91/workflows/oauth2-authorization-proxy-server-spring-boot)
+[![License](https://img.shields.io/github/license/szgabsz91/oauth2-authorization-proxy-server-spring-boot.svg)](https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/blob/master/LICENSE)
+
 This project demonstrates the usage of `oauth2-authorization-proxy-server-spring-boot`.
 
 The main components of the demo application are:

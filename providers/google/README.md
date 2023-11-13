@@ -1,5 +1,9 @@
 # OAuth2 Authorization Proxy Server Spring Boot - Providers - Google
 
+[![Build Status](https://img.shields.io/circleci/project/github/szgabsz91/oauth2-authorization-proxy-server-spring-boot/master.svg)](https://circleci.com/gh/szgabsz91/workflows/oauth2-authorization-proxy-server-spring-boot)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-provider-google/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-provider-google)
+[![License](https://img.shields.io/github/license/szgabsz91/oauth2-authorization-proxy-server-spring-boot.svg)](https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/blob/master/LICENSE)
+
 Integrates [Google](https://developers.google.com/identity/protocols/OAuth2) as an external OAuth2 provider.
 
 The unique identifier and th expected value in the `X-OAuth2-Provider` header is *Google*.

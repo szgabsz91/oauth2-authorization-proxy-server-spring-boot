@@ -1,5 +1,9 @@
 # OAuth2 Authorization Proxy Server Spring Boot - Providers - API
 
+[![Build Status](https://img.shields.io/circleci/project/github/szgabsz91/oauth2-authorization-proxy-server-spring-boot/master.svg)](https://circleci.com/gh/szgabsz91/workflows/oauth2-authorization-proxy-server-spring-boot)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-provider-api/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.szgabsz91/oauth2-authorization-proxy-server-spring-boot-provider-api)
+[![License](https://img.shields.io/github/license/szgabsz91/oauth2-authorization-proxy-server-spring-boot.svg)](https://github.com/szgabsz91/oauth2-authorization-proxy-server-spring-boot/blob/master/LICENSE)
+
 Each supported external OAuth2 provider is integrated by implementing the
 [`IOauth2Provider`](src/main/java/com/github/szgabsz91/oauth2/authorization/proxy/server/springboot/providers/api/IOAuth2Provider.java)
 interface that has the following methods:
