@@ -53,37 +53,29 @@ public class SecurityConfiguration implements ApplicationContextAware {
      * @return the {@link SecurityWebFilterChain}
      */
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(
+    public SecurityWebFilterChain securityWebFilterChain(
             ServerHttpSecurity httpSecurity,
             ServerSecurityContextRepository serverSecurityContextRepository) {
-        var filterChainBuilder = httpSecurity
-                .csrf().disable()
-                .httpBasic().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .securityContextRepository(serverSecurityContextRepository)
-                .authorizeExchange();
-
         httpSecurity
-                .headers()
-                .referrerPolicy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.ORIGIN);
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .logout(ServerHttpSecurity.LogoutSpec::disable)
+                .securityContextRepository(serverSecurityContextRepository)
+                .authorizeExchange(registry -> {
+                    registry.pathMatchers(configurer.getAntPatternsForPermitAll()).permitAll();
+                    registry.anyExchange().hasAuthority(configurer.getAuthorizedUserAuthority().getAuthority());
+                })
+                .exceptionHandling(configurer -> {
+                    configurer.authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
+                })
+                .headers(headerSpec -> {
+                    headerSpec.referrerPolicy(referrerPolicySpec -> {
+                        referrerPolicySpec.policy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.ORIGIN);
+                    });
+                });
 
-        var antPatternsForPermitAll = configurer.getAntPatternsForPermitAll();
-        if (antPatternsForPermitAll != null) {
-            filterChainBuilder
-                    .pathMatchers(antPatternsForPermitAll).permitAll();
-        }
-
-        var authorizedUserAuthority = configurer.getAuthorizedUserAuthority();
-        filterChainBuilder
-                    .anyExchange().hasAuthority(authorizedUserAuthority.getAuthority());
-
-        filterChainBuilder
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED));
-
-        return filterChainBuilder.and().build();
+        return httpSecurity.build();
     }
 
     /**
