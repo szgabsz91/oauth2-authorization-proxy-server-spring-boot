@@ -3,7 +3,7 @@ version: 2.1
 executors:
     default-executor:
         docker:
-            - image: openjdk:17-jdk-oracle
+            - image: openjdk:21-jdk-oracle
         working_directory: ~/oauth2-authorization-proxy-server-spring-boot
 
 jobs:
