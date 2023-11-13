@@ -1,7 +1,7 @@
 buildscript {
     ext {
         oauth2AuthorizationProxyGroupId = 'com.github.szgabsz91'
-        oauth2AuthorizationProxyVersion = '1.0.1'
+        oauth2AuthorizationProxyVersion = '1.0.2-SNAPSHOT'
 
         javaVersion = 21
 
